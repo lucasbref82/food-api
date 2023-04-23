@@ -4,13 +4,21 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import br.com.foodapi.domain.entity.Estado;
 
 @Repository
 public class EstadoRepository {
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -20,7 +28,10 @@ public class EstadoRepository {
 	}
 	
 	public Estado findById(Long id) {
-		return entityManager.find(Estado.class, id);
+		Object[] params = new Object[] {id};
+		return jdbcTemplate.queryForObject("SELECT * FROM ESTADO WHERE ID = ?", params, (rs, rowNum) -> {
+			return new Estado(rs.getLong("id"), rs.getString("nome"));
+		});
 	}
 
 }
