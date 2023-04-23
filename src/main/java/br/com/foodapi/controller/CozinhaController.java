@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.foodapi.domain.entity.Cozinha;
 import br.com.foodapi.service.CozinhaService;
+import br.com.foodapi.wrapper.CozinhasXmlWrapper;
 
 @RestController
-@RequestMapping(value = "/v1/cozinhas", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+@RequestMapping(value = "/v1/cozinhas")
 public class CozinhaController {
 	
 	@Autowired
@@ -22,6 +23,12 @@ public class CozinhaController {
 	@GetMapping
 	public List<Cozinha> findAll(){
 		return cozinhaService.findAll();
+	}
+	
+	// Customizando representação XML
+	@GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+	public CozinhasXmlWrapper findAllXml(){
+		return new CozinhasXmlWrapper(cozinhaService.findAll());
 	}
 	
 	@GetMapping("/{id}")
