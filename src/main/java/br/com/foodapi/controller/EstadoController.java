@@ -8,23 +8,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.foodapi.domain.entity.Cozinha;
-import br.com.foodapi.service.CozinhaService;
+import br.com.foodapi.domain.entity.Estado;
+import br.com.foodapi.service.EstadoService;
 
 @RestController
-@RequestMapping("/v1/cozinhas")
-public class CozinhaController {
+@RequestMapping("/v1/estados")
+public class EstadoController {
 	
 	@Autowired
-	private CozinhaService cozinhaService;
+	private EstadoService estadoService;
 	
-	@GetMapping
-	public List<Cozinha> findAll(){
-		return cozinhaService.findAll();
+	@GetMapping("/{id}")
+	public Estado findById(@PathVariable Long id) {
+		return estadoService.findById(id);
 	}
 	
-	@GetMapping("{id}")
-	public Cozinha findById(@PathVariable Long id) {
-		return cozinhaService.findById(id);
+	@GetMapping
+	public List<Estado> findAll(){
+		return estadoService.findAll();
 	}
 }

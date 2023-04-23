@@ -36,8 +36,8 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 			throws Exception {
 		Long inicio = Instant.now().toEpochMilli();
 		String identificador = UUID.randomUUID().toString();
-		request.setAttribute("incio", inicio);
-		request.setAttribute("identificador", identificador);
+		request.setAttribute(INICIO, inicio);
+		request.setAttribute(IDENTIFICADOR, identificador);
 		return true;
 	}
 	
@@ -54,7 +54,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 		mensagem.put(FIM, formatter.format(fim));
 		mensagem.put(METODO, request.getMethod());
 		mensagem.put(STATUS, response.getStatus());
-		mensagem.put(DURACAO, inicio.toEpochMilli() - fim.toEpochMilli());
+		mensagem.put(DURACAO, fim.toEpochMilli() - inicio.toEpochMilli());
 		
 		log.info(mensagem.toString());
 		

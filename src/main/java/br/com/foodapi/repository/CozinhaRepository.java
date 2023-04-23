@@ -17,7 +17,7 @@ public class CozinhaRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	public List<Cozinha> listar(){
+	public List<Cozinha> findAll(){
 		TypedQuery<Cozinha> cozinhas = entityManager.createQuery("from Cozinha", Cozinha.class);
 		return cozinhas.getResultList();
 	}

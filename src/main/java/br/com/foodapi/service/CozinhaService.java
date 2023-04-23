@@ -17,8 +17,9 @@ public class CozinhaService {
 	private CozinhaRepository repository;
  
 	public List<Cozinha> findAll(){
-		return repository.listar();
+		return repository.findAll();
 	}
+	
 	@Transactional
 	public void save(Cozinha cozinha) {
 		repository.saveOrUpdate(cozinha);
