@@ -23,7 +23,7 @@ public class Estado {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
-	private String id;
+	private Long id;
 	
 	private String nome;
 }
