@@ -9,7 +9,6 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import br.com.foodapi.domain.entity.Cozinha;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
 
 // Serve para alterar o elemento raiz da representação do XML.
 @JacksonXmlRootElement(localName = "cozinhas")
