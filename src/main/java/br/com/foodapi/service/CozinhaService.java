@@ -41,8 +41,8 @@ public class CozinhaService {
 	
 	@Transactional
 	public void delete(Long id) throws NaoEncontratoException {
-		Cozinha cozinha = findById(id);
-		repository.remove(cozinha);
+		this.findById(id);
+		repository.remove(id);
 	}
 	
 	@Transactional(rollbackOn = Exception.class)
@@ -59,5 +59,9 @@ public class CozinhaService {
 		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 		return repository.saveOrUpdate(cozinhaAtual);
 		
+	}
+	
+	public List<Cozinha> findByNome(String nome){
+		return repository.findByNome(nome);
 	}
 }

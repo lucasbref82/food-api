@@ -1,5 +1,6 @@
 package br.com.foodapi.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -62,6 +63,10 @@ public class RestauranteService {
 	public void delete(Long id) throws NaoEncontratoException {
 		Restaurante found = findById(id);
 		restauranteRepository.delete(found);
+	}
+
+	public List<Restaurante> buscarTodosPorNomeETaxaFrete(String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+		return restauranteRepository.buscarTodosPorNomeETaxaFrete(nome, taxaInicial, taxaFinal);
 	}
 	
 }

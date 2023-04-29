@@ -1,9 +1,11 @@
 package br.com.foodapi.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,26 +25,26 @@ import br.com.foodapi.service.RestauranteService;
 @RestController
 @RequestMapping("/v1/restaurantes")
 public class RestauranteController {
-	
+
 	@Autowired
 	private RestauranteService service;
-	
+
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<Restaurante> findAll(){
+	public List<Restaurante> findAll() {
 		return service.findAll();
 	}
-	
+
 	@GetMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Restaurante findAll(@PathVariable Long id){
+	public Restaurante findAll(@PathVariable Long id) {
 		try {
 			return service.findById(id);
 		} catch (NaoEncontratoException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Restaurante create(@RequestBody Restaurante restaurante) {
@@ -51,8 +54,7 @@ public class RestauranteController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
-	
-	
+
 	@PutMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Restaurante update(@RequestBody Restaurante restaurante, @PathVariable Long id) {
@@ -62,7 +64,7 @@ public class RestauranteController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
@@ -72,5 +74,20 @@ public class RestauranteController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
-	
+
+	@GetMapping("/por-taxa-frete")
+	public ResponseEntity<List<Restaurante>> findByTaxaFrete(@RequestParam(required = false) String nome,
+			@RequestParam(required = false) String taxaInicial, @RequestParam(required = false) String taxaFinal) {
+		BigDecimal taxaInicialConvertida = null;
+		BigDecimal taxaFinalConvertida = null;
+		if (taxaInicial instanceof String) {
+			taxaInicialConvertida = new BigDecimal(taxaInicial);
+		}
+		if (taxaFinal instanceof String) {
+			taxaFinalConvertida = new BigDecimal(taxaFinal);
+		}
+		return ResponseEntity
+				.ok(service.buscarTodosPorNomeETaxaFrete(nome, taxaInicialConvertida, taxaFinalConvertida));
+	}
+
 }
